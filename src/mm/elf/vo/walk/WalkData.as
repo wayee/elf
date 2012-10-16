@@ -13,7 +13,7 @@
 	 */
     public class WalkData 
 	{
-        public var walk_speed:Number = 250;			// 移动速度, 像素/秒
+        public var walk_speed:Number = 200;			// 移动速度, 像素/秒
 //        public var walk_speed:Number = 200;			// 移动速度, 像素/秒
         public var walk_pathArr:Array;				// 路径数组
         public var walk_targetP:Point;				// 目标点

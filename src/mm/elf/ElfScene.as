@@ -8,8 +8,6 @@
 	import flash.events.Event;
 	import flash.geom.Point;
 	
-	import mm.elf.vo.map.MapInfo;
-	import mm.elf.vo.map.SceneInfo;
 	import mm.elf.graphics.layers.SceneAvatarLayer;
 	import mm.elf.graphics.layers.SceneGrid;
 	import mm.elf.graphics.layers.SceneHeadLayer;
@@ -20,6 +18,8 @@
 	import mm.elf.tools.SceneCache;
 	import mm.elf.utils.StaticData;
 	import mm.elf.vo.avatar.AvatarParamData;
+	import mm.elf.vo.map.MapInfo;
+	import mm.elf.vo.map.SceneInfo;
 	import mm.wit.draw.DrawHelper;
 	import mm.wit.log.ZLog;
 
@@ -822,5 +822,46 @@
 			
             return resultArray;
         }
+		
+		/**
+		 * 获得鼠标位置下的所有对象列表
+		 * @return array [[MapTile, ...], [ElfCharacter, ...]]
+		 */
+		public function getSceneObjectsUnderPointEx(mousePos:Point):Array
+		{
+			var sceneChar:ElfCharacter;
+			var resultArray:Array = [];
+			var tilePosX:int = floor((mousePos.x / TILE_WIDTH));
+			var tilePosY:int = floor((mousePos.y / TILE_HEIGHT));
+			
+			// 超出地图的范围
+			if (tilePosX < 0 || tilePosY < 0 || tilePosX >= mapConfig.mapGridX || tilePosY >= mapConfig.mapGridY) {
+				return resultArray;
+			}
+			resultArray.push(SceneCache.mapTiles[tilePosX + "_" + tilePosY]);
+			
+			var mx:Number;
+			var my:Number;
+			
+			var sceneCharList:Array = [];
+			for each (sceneChar in sceneCharacters) {
+				if (sceneChar == mainChar) {
+					// 主角不需要处理
+				} else {
+					if (sceneChar && sceneChar.headFace && sceneChar.headFace.stage) {
+						mx = sceneChar.showContainer.stage.mouseX;
+						my = sceneChar.showContainer.stage.mouseY;
+					}
+					// 鼠标坐标落在场景角色的范围
+					if (sceneChar.headFace && sceneChar.headFace && sceneChar.headFace.hitTestPoint(mx, my)) {
+						sceneCharList.push(sceneChar);
+					}
+				}
+			}
+			sceneCharList.sortOn("pixel_y", (Array.DESCENDING | Array.NUMERIC));
+			resultArray.push(sceneCharList);
+			
+			return resultArray;
+		}
     }
 }

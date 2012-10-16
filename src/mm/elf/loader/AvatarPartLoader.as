@@ -31,6 +31,8 @@
 			
             var paramData:AvatarParamData = avatarParamData;			// avatar part data
             paramData = avatarParamData !=null ? avatarParamData.clone() : new AvatarParamData();
+//			trace('[AvatarPartLoader.loadAvatarPart 111]', 'load ' + paramData.sourcePath, 'paramData.clearSameType:'+paramData.clearSameType, ' sceneChar:'+sceneChar, 'sceneChar.usable:'+sceneChar.usable);
+//			trace('[AvatarPartLoader.loadAvatarPart 111]', 'load ' + paramData.sourcePath);
 			
             if (sceneChar != null && sceneChar.usable && paramData.sourcePath != null && paramData.sourcePath != "") {
 				// 删除正在加载的同类数据
@@ -40,11 +42,11 @@
 				
 				// 如果没有该 URL 路径, 则新建加载
                 if ( !SceneCache.avatarXmlCache.has(paramData.sourcePath) ) {
-//				trace('paramData.sourcePath', paramData.sourcePath);
 					
 					// 定义加载操作, 设置解密函数(LoadData decode 参数), 执行加载
                     var loadSource:Function = function():void
 					{
+//						trace('[AvatarPartLoader.loadAvatarPart 222]', 'load ' + paramData.sourcePath);
                         var loadData:LoadData = new LoadData(paramData.sourcePath, null, null, loadError, "", "", RslLoader.TARGET_SAME, 0);
                         RslLoaderManager.load([loadData], loadSourceComplete);
                     }
@@ -119,8 +121,10 @@
                     apsRes = SceneCache.avatarXmlCache.get(paramData.sourcePath).data;
                     if (apsRes == null) {
                         SceneCache.addWaitingLoadAvatar(sceneChar, paramData.clone());
+//						trace('[AvatarPartLoader.loadAvatarPart 333]', 'exec SceneCache.addWaitingLoadAvatar ' + paramData.sourcePath, SceneCache.waitingLoadAvatars[paramData.sourcePath].length);
                     } else {
                         SceneCache.addWaitingAddAvatar(sceneChar, paramData.clone(), apsRes);
+//						trace('[AvatarPartLoader.loadAvatarPart 333]', 'exec SceneCache.addWaitingAddAvatar ' + paramData.sourcePath);
                     }
                 }
             }

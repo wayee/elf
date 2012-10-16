@@ -49,7 +49,7 @@ package mm.wit.net
 		
 		public function CJSONSocket( host:String = null, port:int = 0 ) 
 		{
-//			Security.loadPolicyFile("xmlsocket://" + host + ":" + 843); 
+//			Security.loadPolicyFile("xmlsocket://" + host + ":" + 8006); 
 			endian = ENDIAN;
 			add_listener();
 			m_host     = host;

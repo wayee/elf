@@ -15,10 +15,10 @@
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
 	
-	import mm.wit.pool.IPoolObject;
-	import mm.wit.utils.Fun;
 	import mm.elf.ElfRender;
 	import mm.elf.tools.ScenePool;
+	import mm.wit.pool.IPoolObject;
+	import mm.wit.utils.Fun;
 
 	/**
 	 * 昵称/称号/图标/血条/对话文字
@@ -479,6 +479,11 @@
             }
             resize();
         }
+		
+		public function get mainBitmap():Bitmap
+		{
+			return _mainBitmap;
+		}
 		
         private function resize():void
 		{

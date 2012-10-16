@@ -96,6 +96,7 @@
             if (loadSource != null) {
                 waitingLoadAvatarFun[avatarParamData.sourcePath] = loadSource;
                 waitingLoadAvatarHT.push(loadSource, null, LOAD_AVATAR_DELAY);
+//				trace('[ScaneCache.addWaitingLoadAvatar 444]', avatarParamData.sourcePath);
             }
             var avatarDataArr:Array = waitingLoadAvatars[avatarParamData.sourcePath]; // 每个角色都有多个数据，如站立，跑步，攻击和受伤等等
             if (avatarDataArr == null) {
@@ -112,7 +113,9 @@
 				
                 if (!exists) {
                     waitingLoadAvatars[avatarParamData.sourcePath].push([sceneChar, avatarParamData]);
-                }
+                } else {
+//					trace('[ScaneCache.addWaitingLoadAvatar 555]', avatarParamData.sourcePath);
+				}
             }
         }
 		
@@ -182,20 +185,9 @@
                     for each (arr in watingArr) {
                         sc = arr[0];
                         apd = arr[1];
-						
-                        if (
-							 ( StaticData.isDefaultKey(apd.id) || (except_char_arr != null && except_char_arr.indexOf(sc) != -1) )
-							 || 
-							 (
-								!( ( 
-									  ( sceneChar == null || (sc == sceneChar && sc.id == sceneChar.id) )
-									  && (avatarPartID == null || apd.id == avatarPartID)
-									) 
-									&& 
-									(avatarPartType == null || apd.avatarPartType == avatarPartType) )
-							  )
-						    )
-						{
+						if ((StaticData.isDefaultKey(apd.id) || (except_char_arr != null && except_char_arr.indexOf(sc) != -1))
+							|| !(((sceneChar == null || (sc == sceneChar && sc.id == sceneChar.id)) && (avatarPartID == null || 
+								apd.id == avatarPartID)) && (avatarPartType == null || (apd.avatarPartType == avatarPartType)))) {
                             newWatingArr.push(arr);
                         } else {
                             apd.executeCallBack(sceneChar);
@@ -228,15 +220,9 @@
                 apd1 = arr1[1];
                 addFun = arr1[2];
                 
-				if ( except_char_arr != null && except_char_arr.indexOf(sc1) != -1 
-					|| 
-					( 
-						!(sceneChar == null || sc1 == sceneChar && sc1.id == sceneChar.id && avatarPartID == null || apd1.id == avatarPartID) 
-						&& 
-						(avatarPartType == null || apd1.avatarPartType == avatarPartType)
-					)
-				   )
-				{
+				if ((except_char_arr != null && except_char_arr.indexOf(sc1) != -1) || 
+					!(((sceneChar == null || (sc1 == sceneChar && sc1.id == sceneChar.id)) && (avatarPartID == null || 
+						apd1.id == avatarPartID)) && (avatarPartType == null || (apd1.avatarPartType == avatarPartType)))) {
                 } else {
                     waitingAddAvatars.splice(len, 1);
                     waitingAddAvatarHT.removeHandler(addFun);
@@ -266,6 +252,7 @@
                     }
                 }
             }
+//			trace('[ScaneCache.dowithWaiting]', sourcePath + ' ' + arr.length + ' times');
             delete waitingLoadAvatars[sourcePath];
         }
 		

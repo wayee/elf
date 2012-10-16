@@ -177,8 +177,10 @@
 				if (this._next.delay > 0) {
 					// 设置定时器结束后的执行函数
 					var newHandler:Function = function ():void {
+//						trace(Name+'[HandlerThread.executeNext] 222 len:', _handlerDataArr.length, _handlerDataReadyArr.length);
 						if (removeReadyHD(_next)) {
 							HandlerHelper.execute(_next.handler, _next.parameters);
+//							trace(Name+'[HandlerThread.executeNext] 333 len:', _handlerDataArr.length, _handlerDataReadyArr.length);
 						}
 						if (_next.doNext) {
 							executeNext();
@@ -188,6 +190,7 @@
 					}
 					this.addReadyHD(this._next);
 					TimerManager.createOneOffTimer(this._next.delay, 1, newHandler, null, null, null, true);
+//					trace(Name+'[HandlerThread.executeNext] 111 len:', this._handlerDataArr.length, _handlerDataReadyArr.length);
 				} 
 				// 无延时, 立即执行
 				else {
@@ -199,6 +202,7 @@
 					}
 				}
 			} else {
+//				trace(Name+'[HandlerThread.executeNext] this.next is null or false');
 				this.executeNext();
 			}
 		}

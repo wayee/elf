@@ -85,10 +85,14 @@
                 case MouseEvent.MOUSE_MOVE:
                     sceneCharList = _scene.getSceneObjectsUnderPoint(mousePos);		// 获得当前位置所有对象
                     mapTile = sceneCharList[0];	// 获得第一个对象
+					
                     if (mapTile != null){
                         if (sceneCharList.length > 1) {
                             sceneChar = getHitSceneCharacter(sceneCharList[1], mousePos);
-                        }
+                        } else { // NPC HeadFace
+							sceneCharList = _scene.getSceneObjectsUnderPointEx(mousePos);
+							sceneChar = sceneCharList[1][0] as ElfCharacter;
+						}
                         sceneEvent = new ElfEvent(ElfEvent.INTERACTIVE, ElfEventActionInteractive.MOUSE_MOVE, [event, sceneChar, mapTile]);
 						EventManager.dispatchEvent(sceneEvent, ElfScene.eventCenter);
                     }
@@ -99,7 +103,10 @@
                     if (mapTile != null){
                         if (sceneCharList.length > 1){
                             sceneChar = getHitSceneCharacter(sceneCharList[1], mousePos);
-                        }
+                        }else { // NPC HeadFace
+							sceneCharList = _scene.getSceneObjectsUnderPointEx(mousePos);
+							sceneChar = sceneCharList[1][0] as ElfCharacter;
+						}
                         curTime = getTimer();
 						
 						// x*x + y*y

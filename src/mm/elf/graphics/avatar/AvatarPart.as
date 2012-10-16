@@ -30,6 +30,7 @@
 	public class AvatarPart implements IPoolObject
 	{
 		private static const MOUSE_ON_GLOWFILTER:GlowFilter = new GlowFilter(0xFFFFFF, 0.7, 7, 7, 4, 1);
+		private static const MOUSE_ON_GLOWFILTER_BY_RELIGION_NPC:GlowFilter = new GlowFilter(0x55e9ff , 0.7, 10, 10, 4, 1);
 		
 		public var usable:Boolean = false;
 		public var avatarParamData:AvatarParamData;			// 原始数据, MODEL
@@ -433,7 +434,6 @@
 					
 					cutRect.width = _currentAvatarPartStatus.width;
 					cutRect.height = _currentAvatarPartStatus.height;
-					
 					// 角度转换: 0, 4567, 左右镜像
 					if (_currentLogicAngle == 0 || _currentLogicAngle >= 4) {
 						source_x = _currentFrame;
@@ -500,11 +500,22 @@
 						if (_drawMouseOn && avatar.sceneCharacter.isMouseOn) {
 							_drawSourceBitmapData = new BitmapData(_currentAvatarPartStatus.width, _currentAvatarPartStatus.height, true, 0);
 							_drawSourceBitmapData.copyPixels(sourceBitmapData, new Rectangle(_sourcePoint.x, _sourcePoint.y, _currentAvatarPartStatus.width, _currentAvatarPartStatus.height), new Point(0, 0), null, null, true);
-							_drawSourceBitmapData.applyFilter(_drawSourceBitmapData, new Rectangle(0, 0, _currentAvatarPartStatus.width, _currentAvatarPartStatus.height), new Point(), MOUSE_ON_GLOWFILTER);
+							if(_currentAvatarPartStatus.classNamePrefix == "npc51." || _currentAvatarPartStatus.classNamePrefix == "npc52." || _currentAvatarPartStatus.classNamePrefix == "npc53."){
+								_drawSourceBitmapData.applyFilter(_drawSourceBitmapData, new Rectangle(0, 0, _currentAvatarPartStatus.width, _currentAvatarPartStatus.height), new Point(), MOUSE_ON_GLOWFILTER_BY_RELIGION_NPC);
+							}else{
+								_drawSourceBitmapData.applyFilter(_drawSourceBitmapData, new Rectangle(0, 0, _currentAvatarPartStatus.width, _currentAvatarPartStatus.height), new Point(), MOUSE_ON_GLOWFILTER);
+							}
+							
 							_sourcePoint.x = 0;
 							_sourcePoint.y = 0;
+							
+							if (avatar.sceneCharacter.headFace && avatar.sceneCharacter.isMouseOn) {
+								avatar.sceneCharacter.headFace.filters = [MOUSE_ON_GLOWFILTER];
+							}
 						} else {
 							_drawSourceBitmapData = sourceBitmapData;
+							if(avatar.sceneCharacter.headFace)
+								avatar.sceneCharacter.headFace.filters = [];
 						}
 					}
 					
